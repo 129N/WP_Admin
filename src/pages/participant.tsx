@@ -1,17 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./Participant.css";
-
-
+import '../pages/layouts/Home.css';
+import Header from "../comp/header";
 const Participant: React.FC = () => {
 
     const navigate = useNavigate();
 
     return(
  <div className="participant-container">
+    <Header/>
       <h2 className="participant-header">Participant Dashboard Loaded</h2>
 
-      <div className="button-container">
+      <div className="button-group">
         <button
           className="btn red"
           onClick={() => navigate("/")}
@@ -41,7 +41,7 @@ const Participant: React.FC = () => {
         </button>
 
         <button
-          className="btn purple"
+          className="btn orange"
           onClick={() => navigate("/newfileloader")}
         >
           New File Load

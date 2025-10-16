@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./Home.css";
+import '../pages/layouts/Home.css';
+import Header from "../comp/header";
+
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -8,7 +10,7 @@ const Home: React.FC = () => {
   return (
     <>
       <div className="header">Waypoint Tracker Admin Panel</div>
-
+        <Header/>
       <div className="home-container">
         <h2>Welcome Back, {username}</h2>
         <p className="subtitle">
@@ -28,6 +30,12 @@ const Home: React.FC = () => {
           <button className="btn orange" onClick={() => navigate("/register")}>
             Registration
           </button>
+
+          <button className="btn worm" onClick={() => navigate("/login")}>
+            Login
+          </button>
+
+
           <button className="btn pink" onClick={() => navigate("/wp-screen")}>
             WP Button
           </button>

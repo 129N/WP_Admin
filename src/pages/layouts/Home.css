@@ -45,7 +45,7 @@ body {
 .button-group {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
+  gap: 5rem;
   width: 100%;
   max-width: 800px;
 }
@@ -76,6 +76,9 @@ body {
 .pink   { background-color: #f9a8d4; color: #1f2937; }
 .orange { background-color: #f97316; }
 .yellow { background-color: #bcf916; }
+.red  { background-color: #f91616; }
+.worm { background-color: #eab676;}
+
 /* Responsive tweaks */
 @media (max-width: 600px) {
   .home-container h2 {

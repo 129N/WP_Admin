@@ -1,0 +1,97 @@
+.registration-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+.role-section {
+  margin-bottom: 1rem;
+}
+
+.role-buttons {
+  display: flex;
+  gap: 0;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 300px;
+  margin: 1rem auto;
+}
+
+.role-btn {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  border: none;
+  background-color: #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.role-btn:not(:last-child) {
+  border-right: 1px solid #d1d5db;
+}
+
+.role-btn:hover {
+  background-color: #e5e7eb;
+}
+
+.role-btn.active {
+  background-color: #2563eb; /* nice blue */
+  color: #fff;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+input {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.btn {
+  flex: 1;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+.delete { background: #ef4444; }
+.register { background: #10b981; }
+.fetch { background: #3b82f6; }
+.test { background: #8b5cf6; }
+
+.result {
+  margin-top: 2rem;
+}
+
+.user-card {
+  background: #f3f4f6;
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+.no-data {
+  color: #9ca3af;
+}
+

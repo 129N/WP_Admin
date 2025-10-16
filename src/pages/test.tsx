@@ -1,9 +1,8 @@
-
-
 import { BASE_URL } from "../App";
 import { useState } from "react";
 import React from "react";
-import '../pages/test.css';
+import "../pages/layouts/test.css";
+import Header from "../comp/header";
 
 const Test: React.FC = () => {
 
@@ -56,6 +55,7 @@ console.log(`The connectionURL is ${BASE_URL}`);
 
   return(
   <div className="Container">
+    <Header/>
         <h1>Vite + React</h1>
             <h2>{BASE_URL}</h2>
 
