@@ -1,16 +1,17 @@
 
 
 
-import React, { useReducer } from 'react';
+
 import { useNavigate, useRoutes } from 'react-router-dom';
 import '../pages/layouts/Home.css';
 import AdminPanel from '../comp/ADMIN/adminPanel';
 import Header from "../comp/header";
+import { useState } from 'react';
 
 
 export default function AdminHome() {
     const navigate = useNavigate();
-
+    const [role, setRole] = useState();
 
     return (
 
@@ -28,7 +29,7 @@ export default function AdminHome() {
                     Back Home
                 </button>
 
-                <button className='btn blue' onClick={() => navigate("/")}>
+                <button className='btn blue' onClick={() => navigate("/eventCreation")}>
                     Create Event
                 </button>
 

@@ -116,10 +116,11 @@ const Registration: React.FC = () => {
             const res = await fetch(`${BASE_URL}/ping`);
             const text = await res.text();
             console.log('PING:', text);
+            // alert("Connected");
         }catch(err){
             console.log(err, "Fetching Failed");
-        } alert("Not Connected");
-
+            alert("Not Connected");
+        } 
     };
 
    const handleAlert = async() => {

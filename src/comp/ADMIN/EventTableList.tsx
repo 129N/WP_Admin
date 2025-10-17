@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../App";
+import Header from "../header";
+import { useParams } from "react-router-dom";
+
 
 type Event = {
   id: number;
@@ -11,7 +14,10 @@ type Event = {
   event_code: string;
 };
 
+
  const  EventTableLists : React.FC = () => {
+
+  const { id } = useParams();
 
     const [events, setEvents] = useState<Event[]>([]);
     const [userRole, setUserRole] = useState<string|null>(null);
@@ -97,6 +103,7 @@ const handleDeleteEvent = async(id:number, event_title : string ) => {
 
  return (
     <main className="event-container">
+      <Header/>
       <h2 className="header">Fetched Event List</h2>
 
       <button className="fetch-button" onClick={handleFetchEvents}>
@@ -125,7 +132,7 @@ const handleDeleteEvent = async(id:number, event_title : string ) => {
               <div className="button-row">
                 <button
                   className="view-button"
-                  onClick={() => navigate(`/event/${event.id}`)}
+                  onClick={() => navigate(`/EventRegistration/${event.id}`)}
                 >
                   View
                 </button>

@@ -1,0 +1,119 @@
+/* Profile.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fafafa;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: "Poppins", sans-serif;
+}
+
+.profileWrapper {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+}
+
+.profileImageContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.profileImage {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ff7a00;
+}
+
+.editIconContainer {
+  position: absolute;
+  bottom: 10px;
+  right: 38%;
+  background-color: #ff7a00;
+  border: none;
+  border-radius: 12px;
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.editIconContainer:hover {
+  background-color: #ff914d;
+}
+
+.nameRoleContainer {
+  margin-bottom: 1.5rem;
+}
+
+.infoText {
+  font-size: 16px;
+  color: #444;
+  margin: 4px 0;
+}
+
+.inputFieldContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inputFieldContainer form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inputFieldContainer input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.inputFieldContainer input:focus {
+  border-color: #ff7a00;
+}
+
+.button {
+  background-color: #ff7a00;
+  color: #fff;
+  font-weight: 600;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  background-color: #ff914d;
+}
+
+.logoutButton {
+  background-color: transparent;
+  border: 1.5px solid #ff7a00;
+  color: #ff7a00;
+  font-weight: 600;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logoutButton:hover {
+  background-color: #ff7a00;
+  color: #fff;
+}

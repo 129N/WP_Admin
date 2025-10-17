@@ -28,14 +28,14 @@ const Participant: React.FC = () => {
 
         <button
           className="btn green"
-          onClick={() => navigate("/events")}
+          onClick={() => navigate("/eventlist")}
         >
           Event Lists
         </button>
 
         <button
           className="btn blue"
-          onClick={() => navigate("/gyroscope")}
+          onClick={() => navigate("/competiton")}
         >
           Participate in Competition
         </button>
@@ -52,6 +52,14 @@ const Participant: React.FC = () => {
           onClick={() => navigate("/wpscreen")}
         >
           Waypoint Screen
+        </button>
+
+        
+        <button
+          className="btn black"
+          onClick={() => navigate("/EventRegistration")}
+        >
+          EventReg(Delete Later)
         </button>
       </div>
     </div>

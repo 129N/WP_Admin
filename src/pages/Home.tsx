@@ -36,7 +36,7 @@ const Home: React.FC = () => {
           </button>
 
 
-          <button className="btn pink" onClick={() => navigate("/wp-screen")}>
+          <button className="btn pink" onClick={() => navigate("/wpscreen")}>
             WP Button
           </button>
             <button className="btn yellow" onClick={() => navigate("/test")}>

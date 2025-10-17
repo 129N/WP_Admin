@@ -1,22 +1,22 @@
 
-import axios from 'axios';
+
 import './App.css'
-import React, { useState }  from 'react';
-import { useNavigate } from 'react-router-dom';
-import { BrowserRouter ,  Route, Router, Routes } from 'react-router-dom'
+import { BrowserRouter ,  Route, Routes } from 'react-router-dom'
 import Home from './pages/Home';
 import Participant from './pages/participant';
 import Test from './pages/test';
 import AdminHome from './pages/AdminHome';
 import AudiencePage from './pages/Audience';
 import Registration from './pages/Register';
-import Header from './comp/header';
-
+import ProfileLogin from './Authentication/ProfileLogin';
+import WPScreen from './PARTICIPANT/TrackingScreen';
+import CompetitionScreen from './PARTICIPANT/Competition';
+import EventTableLists from './comp/ADMIN/EventTableList';
+import EventCreation from './comp/ADMIN/EventCreation';
+import EventRegistration from './PARTICIPANT/EventRegistration';
 export const BASE_URL =import.meta.env.VITE_API_BASE_URL;
 
-
 function App() {
-
 
   return (
     <>
@@ -31,9 +31,13 @@ function App() {
       <Route path="/admin" element={<AdminHome />} />
       <Route path="/audience" element={<AudiencePage />} />
       <Route path="/register" element={<Registration/>} /> 
-           {/*
-        <Route path="/wp-screen" element={<WPScreen />} />
-   */}
+      <Route path="/login" element={<ProfileLogin/>} /> 
+      <Route path="/login" element={<ProfileLogin/>} />
+      <Route path="/wpscreen" element={<WPScreen />} />
+      <Route path="/competiton" element={<CompetitionScreen />} />
+      <Route path="/eventlist" element={<EventTableLists />} />
+      <Route path="/eventCreation" element={<EventCreation />} />
+      <Route path="/EventRegistration/:id" element={<EventRegistration />} />
     </Routes>
   </BrowserRouter>
 

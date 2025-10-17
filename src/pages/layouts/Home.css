@@ -78,6 +78,7 @@ body {
 .yellow { background-color: #bcf916; }
 .red  { background-color: #f91616; }
 .worm { background-color: #eab676;}
+.black { background-color: rgb(0, 0, 0);}
 
 /* Responsive tweaks */
 @media (max-width: 600px) {
