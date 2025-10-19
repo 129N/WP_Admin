@@ -2,6 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import '../pages/layouts/Home.css';
 import Header from "../comp/header";
+import iconUrl from "leaflet/dist/images/marker-icon.png";
+import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
 
 const Home: React.FC = () => {
@@ -41,6 +43,9 @@ const Home: React.FC = () => {
           </button>
             <button className="btn yellow" onClick={() => navigate("/test")}>
             Test
+          </button>
+          <button className="btn pink" onClick={() => navigate("/Fileloader")}>
+           File Loading
           </button>
         </div>
       </div>

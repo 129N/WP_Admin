@@ -14,6 +14,8 @@ import CompetitionScreen from './PARTICIPANT/Competition';
 import EventTableLists from './comp/ADMIN/EventTableList';
 import EventCreation from './comp/ADMIN/EventCreation';
 import EventRegistration from './PARTICIPANT/EventRegistration';
+import GPXLoader from './comp/ADMIN/FileLoader';
+
 export const BASE_URL =import.meta.env.VITE_API_BASE_URL;
 
 function App() {
@@ -38,6 +40,7 @@ function App() {
       <Route path="/eventlist" element={<EventTableLists />} />
       <Route path="/eventCreation" element={<EventCreation />} />
       <Route path="/EventRegistration/:id" element={<EventRegistration />} />
+      <Route path="/Fileloader" element={<GPXLoader />} />
     </Routes>
   </BrowserRouter>
 
