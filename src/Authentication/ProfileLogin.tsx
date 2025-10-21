@@ -27,10 +27,10 @@ const ProfileLogin: React.FC = () => {
     useEffect(() => {
 
         const loadUserInfo = async () =>{
-            const token = await localStorage.getItem('authToken');
-            const email = await localStorage.getItem('userEmail');
-            const role = await localStorage.getItem('userRole');
-            const name = await localStorage.getItem('name');
+            const token =  localStorage.getItem('authToken');
+            const email =  localStorage.getItem('userEmail');
+            const role =  localStorage.getItem('userRole');
+            const name =  localStorage.getItem('name');
             setIsLoggedIn(!!token);
             setUserEmail(email || '');
             setUserRole(role || '');
@@ -41,6 +41,7 @@ const ProfileLogin: React.FC = () => {
 
 
     const handleLogin = async() => {
+    console.log("Login is in progress");
         try{
 
             if(!role){
@@ -52,10 +53,10 @@ const ProfileLogin: React.FC = () => {
       console.log("Login payload:", email, password);
 
          const response = await fetch(`${BASE_URL}/login_react`,{
-             method: 'POST',
+             method: "POST",
              headers: {
-              'Content-Type': 'application/json',
-                Accept: 'application/json',
+              "Content-Type": "application/json",
+              Accept: "application/json",
             },
             body: JSON.stringify({
                 email,  // email input value
@@ -80,10 +81,10 @@ const ProfileLogin: React.FC = () => {
                 return;
             }
             
-            await localStorage.setItem('userEmail', email);
-            await localStorage.setItem('authToken', token);
-            await localStorage.setItem('userRole', roleFromApi);
-            await localStorage.setItem('name', userName);
+             localStorage.setItem('userEmail', email);
+             localStorage.setItem('authToken', token);
+             localStorage.setItem('userRole', roleFromApi);
+             localStorage.setItem('name', userName);
 
             alert('Logged in as ' + roleFromApi);
             console.log("Login Success:", token);
@@ -110,9 +111,10 @@ const ProfileLogin: React.FC = () => {
     const handleLogout = async() => {
          try{
                //await AsyncStorage.clear();
-            const token = await localStorage.getItem('authToken');
-          
-        await localStorage.removeItem('userEmail');
+             const token = localStorage.getItem('authToken');
+          // const token = localStorage.clear();
+
+         localStorage.removeItem('userEmail');
             if(!token){
                 alert('You are already logged out.');
                 return;
@@ -123,13 +125,15 @@ const ProfileLogin: React.FC = () => {
                          method: 'POST',
                          headers: {
                             Authorization : `Bearer ${token}`, // It is needed to authenticate btw the server and the client.
-                            Accept: 'application/json',
+                            Accept: "application/json",
                         },
             });
 
             if(response.ok){
 
-                await localStorage.multiRemove(['authToken', 'userRole', 'userId', 'userName']);
+              localStorage.removeItem('authToken');
+              localStorage.removeItem('userRole');
+              localStorage.removeItem('userEmail');
 
                 // await AsyncStorage.clear();
 
@@ -177,9 +181,9 @@ const ProfileLogin: React.FC = () => {
 
         <div className="inputFieldContainer">
           {!isLoggedin ? (
-            <form onSubmit={handleLogin} >
 
- {/* Email input */}
+            <div>
+
         <div >
           <IoMailOutline size={20} color="#888"  />
           <input
@@ -189,9 +193,7 @@ const ProfileLogin: React.FC = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </div>
-
-        {/* Password input */}
+                  {/* Password input */}
         <div >
           <MdPassword size={20} color="#888" />
           <input
@@ -202,11 +204,15 @@ const ProfileLogin: React.FC = () => {
             required
           />
         </div>
-
+      
               <button className="button" onClick={handleLogin}>
                 Next
               </button>
-            </form>
+        </div>
+
+            </div>
+
+
           ) : (
             <button className="logoutButton" onClick={handleLogout}>
               Logout

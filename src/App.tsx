@@ -15,7 +15,8 @@ import EventTableLists from './comp/ADMIN/EventTableList';
 import EventCreation from './comp/ADMIN/EventCreation';
 import EventRegistration from './PARTICIPANT/EventRegistration';
 import GPXLoader from './comp/ADMIN/FileLoader';
-
+import TrackMap from './comp/ADMIN/FileLoadOPT';
+import Datalist from './comp/ADMIN/admin_DataList';
 export const BASE_URL =import.meta.env.VITE_API_BASE_URL;
 
 function App() {
@@ -41,6 +42,8 @@ function App() {
       <Route path="/eventCreation" element={<EventCreation />} />
       <Route path="/EventRegistration/:id" element={<EventRegistration />} />
       <Route path="/Fileloader" element={<GPXLoader />} />
+      <Route path="/MapView" element={<TrackMap />} />
+      <Route path="/Datalist" element={<Datalist />} />
     </Routes>
   </BrowserRouter>
 

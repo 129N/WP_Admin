@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { BASE_URL } from "../App";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import '../pages/layouts/Registration.css';
 import Header from "../comp/header";
 
@@ -39,7 +39,7 @@ const Registration: React.FC = () => {
             const data = await res.json();
             if(res.ok) {
                 console.log('Registration has been succeeded');
-             alert('Registration Successful!');
+             alert(`Registration Successful! ${data.email}`);
              setSuccess(true);
             } else{
                 console.log('Failed', data);
@@ -70,7 +70,7 @@ const Registration: React.FC = () => {
 
             if(res.ok){
                 console.log('Data deleted successfully!');
-                alert('Data deleted successfully!');
+                alert(`Data deleted successfully! `);
             }
             else{
                 console.error('Delete failed:', result);
@@ -83,27 +83,48 @@ const Registration: React.FC = () => {
         } 
     };
 
+
+    //post method 
     const fetchUsers = async() => {
  // after login or register (backend returns token)
-      const token = await localStorage.getItem('token');
+
+
+    const token =  localStorage.getItem('authToken');
+    console.log("Token is ",token);
+
+        if(!token) {
+             alert('No token found. Please log in again.');
+            return;
+        }
+
 
         try{
           const response = await fetch (`${BASE_URL}/registered_users`,{
-            headers : {
-              Authorization: `Bearer ${token}`,
+             headers: {
               Accept: 'application/json',
+              Authorization: `Bearer ${token}`,
             },
-        });
-        const data = await response.json();
-          if(response.ok){
+          });
 
-          console.log("Fetched user:", data.users);
-            setFetchedUsers(data.users);
-            alert('Fetching successful');
+             const contentType = response.headers.get("content-type");
 
-          } else {
-            console.warn("Failed to fetch:", data);
-          }
+    if (!response.ok) {
+      const text = await response.text();
+      console.warn("Backend returned non-OK response:", text);
+      return;
+    }
+
+    if (contentType && contentType.includes("application/json")) {
+      const data = await response.json();
+      console.log("Fetched users:", data.users);
+      setFetchedUsers(data.users);
+      alert("Fetching successful!");
+    } else {
+      const text = await response.text();
+      console.error("Expected JSON, got:", text.slice(0, 200));
+      alert("Backend did not return JSON. Check Laravel logs.");
+    }
+
         } 
         catch(geterr){
           console.log('The GET mwthod', geterr)
@@ -126,7 +147,7 @@ const Registration: React.FC = () => {
    const handleAlert = async() => {
     const confirmed = window.confirm("Would you like to go to the login page?");
         if (confirmed) {
-        navigate("../src/Authentication"); // same as router.replace() in RN
+        navigate("/login"); // same as router.replace() in RN
     }
    };
 

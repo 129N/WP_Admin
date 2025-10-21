@@ -37,7 +37,7 @@ export default function AdminHome() {
                     Manage Event
                 </button>
 
-                <button className='btn orange' onClick={() => navigate("/")}>
+                <button className='btn orange' onClick={() => navigate("/Datalist")}>
                     Users fetched lists
                 </button>
 

@@ -45,7 +45,7 @@ const handleFetchEvents = async() => {
         const response = await fetch(`${BASE_URL}/events`, {
         headers:{
             Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
+            Accept: "application/json",
         },
         });
 
@@ -58,7 +58,7 @@ const handleFetchEvents = async() => {
         }
     }
     catch(error){
-        console.error("Error ", error);
+        console.error("Reload Error ", error);
     } finally {
       setLoading(false);
     }

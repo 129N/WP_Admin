@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { xml2js } from "xml-js";
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from "react-leaflet";
 
+import TrackMap from "./FileLoadOPT";
 
 import "./Layout/FileLoader.css"; // external stylesheet
 import { BASE_URL } from "../../App";
+import type { LatLngBounds, LatLngTuple } from "leaflet";
 
-//API provider 
-import { GoogleMap, LoadScript, } from '@react-google-maps/api';
+
+
+
 // import { GoogleMap, LoadScript, Polyline, Marker } from '@react-google-maps/api';
 
 
@@ -36,6 +39,12 @@ type RawTrackPoint  = {
   '@_lat': string;
   '@_lon': string;
   ele?: { '#text': string};
+};
+
+
+type TrackMapProps = {
+  Waypoints?: Waypoint[];
+  trackPoints?: TrackPoint[];
 };
 
 
@@ -92,6 +101,7 @@ const [selectedFile, setSelectedFile] = useState<File | null>(null);
 const parsedTrackPoints : RawTrackPoint []= extractTrackPints(trk);
   return { waypoints : parsedWaypoints, trackPoints : parsedTrackPoints };
 };
+
 
   // --- pick and parse file ---
   const pickFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -202,7 +212,7 @@ const parsedTrackPoints : RawTrackPoint []= extractTrackPints(trk);
   }
 };
 
-const defaultCenter = { latitude: 46.8333, longitude: 17.75 }; // Tokyo Station as example
+// const defaultCenter = { latitude: 46.8333, longitude: 17.75 }; // Tokyo Station as example
 
   return (
     <div className="gpx-container">
@@ -216,6 +226,7 @@ const defaultCenter = { latitude: 46.8333, longitude: 17.75 }; // Tokyo Station 
       <button className="primaryBtn" onClick={handleDelete}>
         Delete Data
       </button>
+      
 
       {coordinates ? (
         <div className="map-wrapper">
@@ -223,12 +234,8 @@ const defaultCenter = { latitude: 46.8333, longitude: 17.75 }; // Tokyo Station 
             Upload to BE
           </button>
 
-          <MapContainer
-            className="map"
-            center={[coordinates.latitude, coordinates.longitude]}
-            zoom={13}
-            scrollWheelZoom={false}
-          >
+   <MapContainer center={[coordinates.latitude, coordinates.longitude]}
+   zoom={13} style={{ height: "80%", width: "400%" }}>
             <TileLayer
               attribution="&copy; OpenStreetMap contributors"
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -253,8 +260,14 @@ const defaultCenter = { latitude: 46.8333, longitude: 17.75 }; // Tokyo Station 
           </MapContainer>
         </div>
       ) : (
-        <div className="map-wrapper">
-            <MapContainer
+          <TrackMap />
+      )}
+    </div>
+  );
+};
+
+export default GPXLoader;
+            {/* <MapContainer
             center={[
                 //default is set at Balaton.
                     defaultCenter.latitude,
@@ -269,19 +282,8 @@ const defaultCenter = { latitude: 46.8333, longitude: 17.75 }; // Tokyo Station 
             attribution="&copy; <a href='https://carto.com/attributions'>CARTO</a>"
           />
 
-        </MapContainer>
+        </MapContainer> */}
 
         {/* <LoadScript googleMapsApiKey="">
                 <div>React Google Map</div>
         </LoadScript> */}
-
-        
-      </div>
-
-        
-      )}
-    </div>
-  );
-};
-
-export default GPXLoader;

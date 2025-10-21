@@ -47,6 +47,7 @@ const Home: React.FC = () => {
           <button className="btn pink" onClick={() => navigate("/Fileloader")}>
            File Loading
           </button>
+
         </div>
       </div>
     </>
