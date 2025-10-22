@@ -9,15 +9,14 @@ import Header from "../header";
 
 const Datalist: React.FC = () =>{
 
-    const [fectchedUsers, setFetchedUser] = useState< UserItem[]>([]);
+    const [fectchedUsers, setFetchedUser] = useState<UserItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState<{email:string; role:string}[]>([]);
 
     const fetchList = async() => {
-        
 
         const token = localStorage.getItem('authToken');
-
+        console.log("Fetch is in progress", token);
         if(!token) {
              alert('No token found. Please log in again.');
             return;
@@ -41,10 +40,9 @@ const Datalist: React.FC = () =>{
                 console.warn("Failed to fetch:", data);
             }
 
-
         }
         catch(GETERR){
-            console.log('The GET mwthod', GETERR)
+            console.log('The GET method', GETERR)
         } finally{
             setLoading(false);
         }
@@ -53,7 +51,6 @@ const Datalist: React.FC = () =>{
     useEffect(() => {
         fetchList();
     }, []);
-
 
     return(
   <div className="styleContainer">

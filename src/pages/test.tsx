@@ -7,30 +7,40 @@ import Header from "../comp/header";
 const Test: React.FC = () => {
 
     
-console.log(`The connectionURL is ${BASE_URL}`);
-
+console.log("Fetching from:", `${BASE_URL}/ping`);
 
   const [pingResult, setPingResult] = useState<string>("");
   const [statusResult, setStatusResult] = useState<string>("");
-    const [success, setSuccess] = useState(false);
-
-
+  const [success, setSuccess] = useState(false);
 
   const PING = async()=> {
+
+    console.log("Fetching is in progress");
     try{
-        const res = await fetch(`${BASE_URL}/ping`);
+        const res = await fetch(`${BASE_URL}/ping`,{
+          headers :{ Accept :"application/json"},
+        });
+  const data = await res.json();
+  console.log("Ping success:", data);
+    // const contentType = res.headers.get("content-type");
 
-        if(res.ok){
-      const data = await res.json();
-      setPingResult(JSON.stringify(data));
-        setSuccess(true);
+    if (res.ok) {
+      setPingResult(JSON.stringify(data, null, 2));
+      setSuccess(false);
+    }
+    else {
+        const text = await res.text();
+        console.warn("Non-OK response:", text.slice(0, 120));
+        setSuccess(false);
+        return;
+    }
 
-      console.log(`Ping success ${data}`);
-        }
-
-        else{
-            setSuccess(false);
-        }
+    // if (contentType && contentType.includes("application/json")) {
+    //   const data = await res.json();
+    //   setPingResult(JSON.stringify(data));
+    //   setSuccess(true);
+    //   console.log("Ping success", data);
+    // } 
 
     }
     catch(err){
