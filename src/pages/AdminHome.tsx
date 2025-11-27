@@ -4,7 +4,7 @@
 
 import { useNavigate, useRoutes } from 'react-router-dom';
 import '../pages/layouts/Home.css';
-import AdminPanel from '../comp/ADMIN/adminPanel';
+
 import Header from "../comp/header";
 import { useState } from 'react';
 
@@ -33,7 +33,7 @@ export default function AdminHome() {
                     Create Event
                 </button>
 
-                <button className='btn green' onClick={() => navigate("/")}>
+                <button className='btn green' onClick={() => navigate("/admin_control")}>
                     Manage Event
                 </button>
 

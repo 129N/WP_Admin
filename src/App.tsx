@@ -17,6 +17,8 @@ import EventRegistration from './PARTICIPANT/EventRegistration';
 import GPXLoader from './comp/ADMIN/FileLoader';
 import TrackMap from './comp/ADMIN/FileLoadOPT';
 import Datalist from './comp/ADMIN/admin_DataList';
+import AdminPanel from './comp/ADMIN/Admin_Map/adminPanel';
+
 export const BASE_URL =import.meta.env.VITE_API_BASE_URL;
 
 function App() {
@@ -32,6 +34,9 @@ function App() {
       <Route path="/participant" element={<Participant />} />
       <Route path="/test" element={<Test />} />
       <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin_control" element={<AdminPanel />} />
+        
+
       <Route path="/audience" element={<AudiencePage />} />
       <Route path="/register" element={<Registration/>} /> 
       <Route path="/login" element={<ProfileLogin/>} /> 

@@ -4,7 +4,7 @@
 import React, { useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../pages/layouts/Home.css';
-import AdminPanel from '../comp/ADMIN/adminPanel';
+import AdminPanel from '../comp/ADMIN/Admin_Map/adminPanel';
 
 export default function AudiencePage() {
     const navigate = useNavigate();

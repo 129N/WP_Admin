@@ -1,0 +1,49 @@
+
+.admin-map-layout {
+  display: grid;
+  height: 100vh;
+  width: 100%;
+ /* Your ideal segmentation */
+  grid-template-columns: 20% 80%;
+  grid-template-rows: 1fr 200px;  /* Top row (map), bottom row (notifications) */
+
+  grid-template-areas:
+
+    "left center"
+    "left bottom";
+}
+
+/* tech reference 
+https://css-tricks.com/snippets/css/complete-guide-grid/
+*/
+
+
+.AdminPanel {
+  grid-area: header; /* You can place inside header or below it */
+}
+
+.Left {
+  grid-area: left;
+  overflow-y: auto;
+  background-color: #ff0000;
+  border-right: 1px solid #000000;
+}
+
+.Center {
+  grid-area: center;
+  position: relative;
+
+}
+
+.Bottom {
+  grid-area: bottom;
+  background-color: #ffffff;
+  border-top: 1px solid #ddd;
+  overflow-y: auto;
+      background-color: #ff00c8;
+}
+
+.leaflet-container{
+ width: 100%;
+  height: 100%;
+}
