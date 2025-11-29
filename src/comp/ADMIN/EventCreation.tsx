@@ -56,7 +56,16 @@ loadUserInfo();
         const data = await response.json();
             if (response.ok) {
                 console.log( "Event has been created", data);
-                alert("Event created successfully!");
+            
+                const eventId = data.event.id;
+                const eventCode = data.event.event_code
+      alert(
+        `Event created successfully!\n\n` +
+        `Event Title: ${data.event.event_title}\n` +
+        `Event Code: ${eventCode}\n` +
+        `Numeric ID: ${eventId}\n\n` +
+        `Use this event code for participant registration.`
+      );
             } else {
             console.error("Failed:", data);
             alert("Event creation failed.");

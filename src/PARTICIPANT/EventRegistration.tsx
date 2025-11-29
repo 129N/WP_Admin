@@ -21,6 +21,7 @@ type Event = {
   const [members, setMembers] = useState([{ name: '', email: '', role: '' }]);
   const [leaderName, setLeaderName] = useState('');
   const [leaderEmail, setLeaderEmail] = useState('');
+  const [eventCode, setEventCode] = useState("");
 
   //loadl user info const 
   const [role, setRole] = useState('');
@@ -33,17 +34,20 @@ type Event = {
 
   useEffect(() => {
     const loadUserInfo = async() => {
-        const name = localStorage.getItem('userName');
+        const name = localStorage.getItem('name');
         const email = localStorage.getItem('userEmail');
         const role = localStorage.getItem('userRole');
-        const userId = localStorage.getItem('userId');
+        const Id = localStorage.getItem('userId');
         const eventTitle = localStorage.getItem('event_title');
+        const event_code = localStorage.getItem('event_code');
         if (name) setLeaderName(name);
         if(email) setLeaderEmail(email);
         if(role) setRole(role);
         if(eventTitle) setEventTitle(eventTitle);
-        if(userId) setUserId(userId);
+        if(Id) setUserId(Id);
         if (eventId) setEventId(eventId);
+        if (event_code) setEventCode(event_code);
+
     };
 loadUserInfo();
   }, []);
@@ -61,16 +65,17 @@ const removemember = (index: number) => {
 const handleRegsiteration = async () => {
 
     try{
+      console.log(`Debug check: UserId ${userId}, ${eventCode}`);
         const token = await localStorage.getItem('authToken');
         if (!token) return alert('Please log in first');
 
-            if (!eventId) return alert('Please select or enter an event first');
+          if (!eventCode) return alert('Please select or enter an event first');
 
         if(mode === 'single'){
             //POST/event_registrations
 
             //Controller name is EventRegistration,php 
-           const res =  await fetch(`${BASE_URL}/events/${eventId}/register`, {
+           const res =  await fetch(`${BASE_URL}/events/${eventCode}/register`, {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
@@ -88,7 +93,7 @@ const handleRegsiteration = async () => {
             const data = await res.json();
             if(res.ok){
 
-             alert(`${leaderName} has been registered` );
+             alert(`${name} has been registered`);
             }else{
                 console.error("REG Failed:", data);
                 alert("Registration failed.");
@@ -121,7 +126,12 @@ const handleRegsiteration = async () => {
             const data = await team_Res.json();
             if(team_Res.ok){
 
-             alert(`${leaderName} has been registered ` );
+               const eventNumericId = data.registration.event_id;
+                alert(
+                  `${name} has been registered!\n\n` +
+                  `Event Code: ${eventCode}\n` +
+                  `Event ID: ${eventNumericId}`
+                );
             }else{
                 console.error("REG Failed:", data);
                 alert("Registration failed.");
@@ -168,8 +178,8 @@ const handleRegsiteration = async () => {
       <input
         type="text"
         placeholder="Enter event ID"
-        value={eventId}
-        onChange={(e) => setEventId(e.target.value)}
+        value={eventCode}
+        onChange={(e) => setEventCode(e.target.value)}
       />
         <label>Leader Name</label>
       <input type="text" value={leaderName} disabled />

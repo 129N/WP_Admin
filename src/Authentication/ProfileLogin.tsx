@@ -20,7 +20,7 @@ const ProfileLogin: React.FC = () => {
     const [userEmail, setUserEmail] = useState ('');
     const [userRole, setUserRole] = useState('');
     const [userName, setUserName] = useState('');
-
+const [userId, setUserId] = useState('');
     const navigate = useNavigate();
 
     //AsynchStorage
@@ -31,10 +31,13 @@ const ProfileLogin: React.FC = () => {
             const email =  localStorage.getItem('userEmail');
             const role =  localStorage.getItem('userRole');
             const name =  localStorage.getItem('name');
+
+            const userId = localStorage.getItem('userId');
             setIsLoggedIn(!!token);
             setUserEmail(email || '');
             setUserRole(role || '');
             setUserName(name || '' );
+            setUserId(userId || '');
         };
         loadUserInfo();
     }, []);
@@ -73,7 +76,7 @@ const ProfileLogin: React.FC = () => {
             const roleFromApi = data.user.role;
             const userName = data.user.name;
             const email = data.user.email;
-   
+            const userId = data.user.id;
          
              if (!token) {
                 console.warn("Token not returned by API");
@@ -85,9 +88,11 @@ const ProfileLogin: React.FC = () => {
              localStorage.setItem('authToken', token);
              localStorage.setItem('userRole', roleFromApi);
              localStorage.setItem('name', userName);
+            localStorage.setItem("userId", userId);
 
             alert('Logged in as ' + roleFromApi);
             console.log("Login Success:", token);
+            console.log(`Debug check ${userId}`);
 
                 if (roleFromApi === 'admin') { // role is also ok.
                 navigate('/admin'); // Route to admin screen

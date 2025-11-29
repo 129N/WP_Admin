@@ -2,9 +2,14 @@
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import type { LatLngBounds, LatLngTuple } from "leaflet";
 import"../Layout/MapView.css";
+import { useEffect } from "react";
 
 
 export default function AdminMapView() {
+
+useEffect(() =>{
+
+}, []);
 
 
 // ✅ Default center = Lake Balaton
