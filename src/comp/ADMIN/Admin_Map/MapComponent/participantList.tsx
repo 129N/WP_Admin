@@ -6,14 +6,22 @@ import type { participants_Interface } from "../adminPanel";
 import { BASE_URL } from "../../../../App";
 
 interface ParticipantProps {
-    participants: participants_Interface[] | null | undefined;
+    participants: participants_Interface[] | null ;
 }
 
 export default function ParticipantStack({participants} : ParticipantProps){
 
-
-    const [eventId, setEventId] = useState(''); //coming from getItem?? 
-    const [competitiotrs, setParticipants] = useState();
+  if (!participants || participants.length === 0) {
+    return (
+      <div className="Stack_Container">
+        <h2>Participants</h2>
+        <p>No participants registered for this event.</p>
+      </div>
+    );
+  }
+  
+    const [event_code, setEventCode] = useState(''); //coming from getItem?? 
+    const [competitiotrs, setParticipants] = useState([]);
     const [loading, setLoading] = useState(false);
 
     // const [locations, setLocations] = useState();
@@ -24,7 +32,7 @@ export default function ParticipantStack({participants} : ParticipantProps){
 
 useEffect(() =>{
 
-    if(!eventId) return; 
+    if(!event_code) return; 
     let cancelled = false;
 
 // run the fetching
@@ -32,7 +40,7 @@ setLoading(true);
     const fetchParticipants  = async() =>{  
     console.log("Participants fetching....");
     try{
-        const res = await fetch(`${BASE_URL}/events/${eventId}/participants`);
+        const res = await fetch(`${BASE_URL}/events/${event_code}/participants`);
         if(!res.ok) {throw new Error("Failed to fetch Participants")};
         const data = await res.json();
         if(!cancelled){setParticipants(data);}
@@ -46,7 +54,7 @@ setLoading(true);
   fetchParticipants();
 
 return () => {cancelled = true;}
-}, [eventId]);
+}, [event_code]);
 
 
 // const fetchLocations = async () => {
@@ -75,7 +83,7 @@ if (loading || !participants) {
   };
 
 
-if (!eventId) {
+if (!event_code) {
     return (
       <div className="List_Container">
         <h2>Participants</h2>

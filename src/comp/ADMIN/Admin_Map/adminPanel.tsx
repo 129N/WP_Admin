@@ -3,9 +3,8 @@ import Header from "../../header";
 import AdminMapView from "./MapComponent/MapView";
 import ParticipantStack from "./MapComponent/participantList";
 import NotificationQueue from "./MapComponent/Notification";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BASE_URL } from "../../../App";
-
 
 type Event = {
   id: number;
@@ -15,7 +14,6 @@ type Event = {
   creator_name: string;
   event_code: string;
 };
-
 
 
 // use interface to construct the Object.
@@ -50,18 +48,28 @@ export default function AdminPanel() {
 
 // EventId from registered Event
     const [events, setEvents] = useState<Event[]>([]);
-     const [eventId, setEventId] = useState(localStorage.getItem("event_id") || "");
+    // const [eventId, setEventId] = useState(localStorage.getItem("event_id") || "");
+    const [participants, setParticipants] = useState<participants_Interface[]>([]);
+    const [event_code, setEventCode] = useState(''); 
+  const [token, setToken] = useState("");
 
+
+  useEffect(() => {
+     const loadUserInfo = async() => {
+        const storedToken = localStorage.getItem("authToken");
+        if (storedToken) setToken(storedToken);
+     };
+    loadUserInfo();
+  });
  const handleSaveEventId = async() => {
 // cheks whether the eventId is real or not.  
-    if(!eventId){
+    if(!event_code || !token){
         alert("Invalid EventId");
         return;
     }
 
     try{
-
-        const res = await fetch(`${BASE_URL}/events/${eventId}`);
+        const res = await fetch(`${BASE_URL}/events/${event_code}`); // Route::get('/events/{event_code}', [EventController::class, 'showEvent']);
         if(!res.ok){ throw new Error("Event not found")};
 
         const eventData: Event = await res.json();
@@ -79,25 +87,13 @@ export default function AdminPanel() {
         if (!confirmLoad) return;
 
     // Save event ID locally
-    localStorage.setItem("admin_event_id", eventId);
+    localStorage.setItem("admin_event_id", event_code);
     alert("Event successfully loaded!");
 
     }catch(err){
         console.error(err);
     alert("Catch Error:Invalid Event ID. Please try again.");
     }
-// then we will show the event title and admin's name. So we need to access the eventList
-    //   {events.length > 0 ? (
-    //     <div className="event-list">
-    //       {events.map((event) => (
-    //         <div key={event.id} className="event-card">
-    //           <div className="event-info">
-    //             <h3>{event.event_title}</h3>
-    //             <p>{event.description}</p>
-    //             <p></p>
-
-
-
 
   };
 
@@ -112,8 +108,8 @@ export default function AdminPanel() {
         {/* Event Input */}
       <div className="EventSelector">
         <input 
-          value={eventId}
-          onChange={(e) => setEventId(e.target.value)}
+          value={event_code}
+          onChange={(e) => setEventCode(e.target.value)}
           placeholder="Enter event ID"
         />
         <button onClick={handleSaveEventId}>Load Event</button>
@@ -126,7 +122,7 @@ export default function AdminPanel() {
                 </div>
 
                 <div className="Left">
-                  {/* <ParticipantStack participants={mockParticipants}/>:/}   {/* from participants_Interface NotificationProps */}
+                 <ParticipantStack participants={participants}/>  {/* from participants_Interface NotificationProps */}
                 </div>
                 
                 <div className="Bottom">
