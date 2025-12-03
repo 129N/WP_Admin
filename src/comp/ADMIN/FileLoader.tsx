@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, {  useState } from "react";
 import { xml2js } from "xml-js";
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from "react-leaflet";
 
@@ -6,12 +6,7 @@ import TrackMap from "./FileLoadOPT";
 
 import "./Layout/FileLoader.css"; // external stylesheet
 import { BASE_URL } from "../../App";
-import type { LatLngBounds, LatLngTuple } from "leaflet";
-
-
-
-
-// import { GoogleMap, LoadScript, Polyline, Marker } from '@react-google-maps/api';
+import Header from "../header";
 
 
 type Coordinates = {
@@ -25,15 +20,6 @@ type Waypoint = {
   longitude: number;
 };
 
-type TrackPoint = {
-  latitude: number;
-  longitude: number;
-};
-
-// type TrackPoint = {
-//   '@_lat': string;
-//   '@_lon': string;
-// };
 
 type RawTrackPoint  = {
   '@_lat': string;
@@ -42,10 +28,6 @@ type RawTrackPoint  = {
 };
 
 
-type TrackMapProps = {
-  Waypoints?: Waypoint[];
-  trackPoints?: TrackPoint[];
-};
 
 
 const GPXLoader: React.FC = () => {
@@ -53,7 +35,7 @@ const GPXLoader: React.FC = () => {
   const [trackPoints, setTrackPoints] = useState<RawTrackPoint[]>([]);
   const [waypoints, setWaypoints] = useState<Waypoint[]>([]);
 const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
+  const [eventCode, setEventCode] = useState("");
 
 
   const ParseGPX = (gpxText: string)=>{
@@ -136,17 +118,12 @@ const parsedTrackPoints : RawTrackPoint []= extractTrackPints(trk);
     }
   };
 
-//   const handleDelete = () => {
-//     setWaypoints([]);
-//     setTrackPoints([]);
-//     setCoordinates(null);
-//   };
-
-  const BEPass = async () => {
-    console.log("Uploading to backend");
+// OLD UPLOAD METHOD
+  const handleGeneric = async () => {
+    console.log("GENERIC VERSION \n Uploading to backend");
     try {
 
-        const token = await localStorage.getItem("token");
+        const token =  localStorage.getItem("authToken"); // or token
 
         if(!selectedFile){
             alert("No GPX file selected for upload.");
@@ -155,6 +132,7 @@ const parsedTrackPoints : RawTrackPoint []= extractTrackPints(trk);
 
         const formdata = new FormData();
          formdata.append("gpx_file", selectedFile); // ✅ Laravel expects this exact key name
+           // LARAVEL SIDE ✅ Route::post('/gpx-upload', [WPReactController::class, 'store']);  
 
         const response = await fetch(`${BASE_URL}/gpx-upload`, {
         method: "POST",
@@ -180,6 +158,44 @@ const parsedTrackPoints : RawTrackPoint []= extractTrackPints(trk);
       alert('Server did not. Check Laravel logs.');
     }
   };
+
+// NEW UPLOAD METHOD
+
+const handleForEvent = async() =>{
+    console.log("EVENT VERSION \n Uploading to backend");
+    if (!eventCode.startsWith("EV")) {
+   return alert("Event code format invalid (expected EV01)");
+}
+
+    try{
+        const token =  localStorage.getItem("token");
+
+        if(!selectedFile) return alert("No GPX file selected for upload.");
+        if (!eventCode) return alert("Enter event code first");
+
+          const formdata = new FormData();
+         formdata.append("gpx_file", selectedFile); 
+
+      const res = await fetch(`${BASE_URL}/events/${eventCode}/gpx-upload`, {
+          method: "POST",
+          headers: {Authorization: `Bearer ${token}`,},
+          body : formdata,
+      });
+      const result = await res.json();
+      if(res.ok){ // OPTIMIZATION add the confirmation alert to show the info of which event it will be added.
+          console.log("Upload success!", result);
+          alert('File uploaded to backend successfully!');
+      }
+      else{
+          console.log("Upload Error", result);
+          alert('File uploaidng error.');
+      }
+    }
+    catch(err){
+      console.error('Upload error:', err);
+      alert('Server did not. Check Laravel logs.');
+    }
+};
 
   const handleDelete = async () => {
           console.log('Delete is in the process');
@@ -216,6 +232,7 @@ const parsedTrackPoints : RawTrackPoint []= extractTrackPints(trk);
 
   return (
     <div className="gpx-container">
+      <Header/>
       <h2 className="title">NEWfileloader</h2>
 
       <label className="fileLabel">
@@ -230,12 +247,23 @@ const parsedTrackPoints : RawTrackPoint []= extractTrackPints(trk);
 
       {coordinates ? (
         <div className="map-wrapper">
-          <button className="uploadBtn" onClick={BEPass}>
+
+        <input className="Inputter"
+          placeholder="Event Code (EV01)"
+          value={eventCode}
+          onChange={(e) => setEventCode(e.target.value)}
+        />
+        <button  className="EVUploadBtn" onClick={handleForEvent}>Upload to Event</button>
+<br />
+          <button className="uploadBtn" onClick={handleGeneric}>
             Upload to BE
           </button>
+        <div style={{ marginTop: "20px" }}>
+
+      </div>
 
    <MapContainer center={[coordinates.latitude, coordinates.longitude]}
-   zoom={13} style={{ height: "80%", width: "400%" }}>
+   zoom={13} style={{ height: "80%", width: "100%" }}>
             <TileLayer
               attribution="&copy; OpenStreetMap contributors"
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

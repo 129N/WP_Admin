@@ -66,7 +66,7 @@ const handleRegsiteration = async () => {
 
     try{
       console.log(`Debug check: UserId ${userId}, ${eventCode}`);
-        const token = await localStorage.getItem('authToken');
+        const token = localStorage.getItem('authToken');
         if (!token) return alert('Please log in first');
 
           if (!eventCode) return alert('Please select or enter an event first');
@@ -74,7 +74,7 @@ const handleRegsiteration = async () => {
         if(mode === 'single'){
             //POST/event_registrations
 
-            //Controller name is EventRegistration,php 
+            //Controller name is EventController in php 
            const res =  await fetch(`${BASE_URL}/events/${eventCode}/register`, {
                 method: 'POST', 
                 headers: {

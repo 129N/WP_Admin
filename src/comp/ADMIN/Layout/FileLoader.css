@@ -87,3 +87,12 @@
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
+
+.EVUploadBtn{
+  background-color: #ff00d4;
+  color: white;
+}
+
+.Inputter{
+  width: 200px;
+}
