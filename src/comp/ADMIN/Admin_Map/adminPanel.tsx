@@ -30,13 +30,9 @@ export interface TrackPoint {
    ele?: number;
 };
 
-
-// export interface RawTrackPoint {
-//   '@_lat': string;
-//   '@_lon': string;
-//   ele?: { '#text': string};
-// };
-
+interface DeleteGpxResponse {
+  message: string;
+}
 
 // use interface to construct the Object.
 export interface participants_Interface {
@@ -50,18 +46,22 @@ export interface participants_Interface {
 
 
 export interface Notification_Interface {
+  id: number;
+  name: string;
+  event_id: number;
+  event_code: string;
+  participant_id: number;
+  type: "emergency" | "surrender" | "waypoint" | "offline" | "system";
+  message: string;
+  timestamp: string;
+  created_at: string;
+  updated_at: string;
+  participant?: {
     id: number;
     name: string;
-    type: "emergency" | "surrender" | "waypoint" | "offline";
-    message: string;
-    timestamp: string;
+    email?: string;
+  };
 }
-
-const announcements: Notification_Interface[] = [
-    { id: 12, name: "John Doe", type: "emergency", message: "Red", timestamp: "active" },
-    { id: 21, name: "Maria Blue", type: "surrender", message: "Blue", timestamp: "offline" },
-    { id: 33, name: "Chris Green",type: "waypoint", message: "Green", timestamp: "finished" },
-]; 
 
 export default function AdminPanel() {
 
@@ -73,9 +73,14 @@ export default function AdminPanel() {
     const [token, setToken] = useState("");
 
       const [loading, setLoading] = useState(false);
-      let cancelled = false;
 const [waypoints, setWaypoints] = useState<Waypoint[]>([]);
 const [trackpoints, setTrackpoints] = useState<TrackPoint[]>([]);
+
+//Notification 
+  const [locations, setLocations] = useState();
+  const [eventId, setEventId] = useState(''); 
+  const [notifications, setNotifications] = useState<Notification_Interface[]> ([]);
+
 
 //----------------------
 // initiate loading   
@@ -88,6 +93,34 @@ const [trackpoints, setTrackpoints] = useState<TrackPoint[]>([]);
         };
             loadUserInfo();
     });
+
+//Notification
+useEffect(() =>{
+      if(!eventId) return; 
+
+  const interval = setInterval(() => {
+  fetchNotifications(event_code);
+  }, 3000);
+return () => clearInterval(interval);
+}, [eventId]);
+
+
+// useEffect(() => {
+//    if (!event_code) return;
+
+//    fetchParticipants(event_code);
+//    fetchNotifications(event_code);
+//    fetchRouteData(event_code);
+
+//    const interval = setInterval(() => {
+//       fetchParticipants(event_code);
+//       fetchNotifications(event_code);
+//       fetchRouteData(event_code);
+//    }, 3000);
+
+//    return () => clearInterval(interval);
+// }, [event_code]);
+
 
 
 //Event code typing 
@@ -124,6 +157,7 @@ const [trackpoints, setTrackpoints] = useState<TrackPoint[]>([]);
 
     // should be set with await 
     await fetchParticipants(event_code);
+    await fetchNotifications(event_code);
     alert("Event successfully loaded!");
     }catch(err){
         console.error(err);
@@ -174,6 +208,65 @@ const fetchParticipants  = async(event_code:string) =>{
       console.error("Route Fetch Error:", err);
     }
   };
+
+// Delete the event. from Route::delete('/events/{event_code}/gpx', [WPReactController::class, 'deleteEventGpx']);
+const handleDeleteGpx = async() =>{
+  if(!event_code){
+    alert("No event selected.");
+    return;
+  }
+
+ const confirmDelete = window.confirm(
+    `Are you sure you want to DELETE all GPX data for Event ${event_code}?\n` +
+    `This action cannot be undone.`
+  );
+
+  if (!confirmDelete) return;
+
+  try{
+    const token = localStorage.getItem("authToken");
+    if (!token) return alert("You must be logged in as admin.");
+
+    const res = await fetch(`${BASE_URL}/events/${event_code}/gpx`,{
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+
+    if(!res.ok)throw new Error("Failed to delete GPX");
+
+  // The message comes from deleteEventGpx Controller return 
+    const data: DeleteGpxResponse = await res.json();
+     alert(data.message);
+
+    // Clear map
+    setWaypoints([]);
+    setTrackpoints([]);
+
+    console.log("GPX deleted: ", data);
+
+  }catch(err){
+    console.error("GPX DELETE ERROR:", err);
+    alert("Error deleting GPX. Check console.");
+  }
+};
+
+const fetchNotifications = async(event_code: string) =>{
+    try{
+        const res = await fetch(`${BASE_URL}/events/${event_code}/notifications`);
+            if(!res.ok) {throw new Error("Failed to fetch notifications")};
+        const data = await res.json();
+        setLocations(data);
+        setNotifications(data);
+    } 
+    catch(error){
+        console.error("notifications error:", error);
+    }
+};
+
+  
     return(
     <>
 
@@ -199,29 +292,36 @@ const fetchParticipants  = async(event_code:string) =>{
     <Header />
 
 
-        {/* Event Input */}
+{/* Event Input */}
       <div className="EventSelector">
         <input 
           value={event_code}
           onChange={(e) => setEventCode(e.target.value)}
           placeholder="Enter event ID"
         />
+{/* Event Load Button */}
         <button onClick={handleSaveEventId}>Load Event</button>
+
+{/* Event Delete Button */}
+        <button onClick={handleDeleteGpx} style={{ backgroundColor: "red", color: "white" }}>
+          Delete GPX for this Event
+        </button>
+
       </div>
 
-            <div className="admin-map-layout">
+        <div className="admin-map-layout">
 
-                <div className="Center">
-                    <AdminMapView waypoints = {waypoints} trackpoints = {trackpoints}/> 
-                </div>
+          <div className="Center">
+              <AdminMapView waypoints = {waypoints} trackpoints = {trackpoints}/> 
+          </div>
 
-                <div className="Left">
-                 <ParticipantStack participants={participants}/>  {/* from participants_Interface NotificationProps */}
-                </div>
-                
-                <div className="Bottom">
-                    <NotificationQueue notification={announcements} />  {/* from Notification_Interface NotificationProps */}
-                </div>
+          <div className="Left">
+            <ParticipantStack participants={participants}/>  {/* from participants_Interface NotificationProps */}
+          </div>
+          
+          <div className="Bottom">
+              <NotificationQueue notification={notifications} />  {/* from Notification_Interface NotificationProps */}
+          </div>
 
         </div>
         

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { BASE_URL } from "../../../../App";
 import"../Layout/MapView.css";
 import type { Notification_Interface } from "../adminPanel";
 
@@ -8,82 +7,59 @@ interface NotificationProps {
 }
 
 
-// export interface Notification_Interface {
-//     id: number;
-//     name: string;
-//     type: "emergency" | "surrender" | "waypoint" | "offline";
-//     message: string;
-//     timestamp: string;
-// }
-
 export default function NotificationQueue({notification} : NotificationProps){
-  const [eventId, setEventId] = useState(''); 
-  const [locations, setLocations] = useState();
-      const [loading, setLoading] = useState(false);
-
 //The data is coming from adminPanel.tsx
 
+// initial activate sentence 
+const [initialized, setInitialized] = useState(false);
+const [finalList, setFinalList] = useState<Notification_Interface[]>([]);
 
-useEffect(() =>{
-      if(!eventId) return; 
+const systemNotification: Notification_Interface = 
+   {
+      id: 0,
+      name: "System",
+      event_id: 0,
+      event_code: "",
+      participant_id: 0,
+      type: "system", // TODO fix the BaeckEnd to segment the type of notification
+      message: "Notification channel activated.",
+      timestamp: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
 
-  const interval = setInterval(() => {
-  fetchNotifications();
-  }, 3000);
-return () => clearInterval(interval);
-}, [eventId]);
+    // Sort real notifications (newest first)
+  const sorted = [...notification].sort(
+    (a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
 
+  // Final display list = system + real notifications
+  const displayList = [systemNotification, ...sorted];
 
-const fetchNotifications = async() =>{
-    try{
-        const res = await fetch(`${BASE_URL}/events/${eventId}/notifications`);
-            if(!res.ok) {throw new Error("Failed to fetch notifications")};
-        const data = await res.json();
-        setLocations(data);
-    } 
-    catch(error){
-        console.error("notifications error:", error);
-    }
-};
+//----------------------
+// INITIAL ACTIVATION    
+//----------------------
 
-
-
-if (!eventId) {
-    return (
-      <div className="List_Container">
-        <h2>Participants</h2>
-        <p>Please enter an Event ID.</p>
-      </div>
-    );
-  }
-
-  if (loading || !locations) {
-    return (
-      <div className="List_Container">
-        <h2>Participants</h2>
-        <p>Loading...</p>
-      </div>
-    );
-  };
-
+// if (notification.length === 0) {
+//     return (
+//       <div className="Stack_Container">
+//         <h3>Notifications</h3>
+//         <p>No Event code</p>
+//       </div>
+//     );
+//   }
 
 //----------------------
 // RENDERING ZONE    
 //----------------------
 return(
-    
     <div className="Stack_Container">  {/* multiple rows with 1 colmuns */}
-        <h2>List</h2>
-<h3>Notifications</h3>
-      <div
-        style={{
-          maxHeight: "100%",
-          overflowY: "auto",
-        }}
-      >
-        {notification.map((n) => (
+        <h2>Notifications</h2>
+      <div style={{maxHeight: "100%",overflowY: "auto"}}>
+        {displayList.map((n) => (
           <div
-            key={n.id}
+           key={n.id + "-" + n.created_at}
             style={{
               border: "1px solid #ccc",
               padding: "4px 8px",
@@ -91,10 +67,11 @@ return(
               fontSize: "0.9rem",
             }}
           >
-            <div>
-              <strong>{n.type.toUpperCase()}</strong> [{n.timestamp}]
-            </div>
-            <div>{n.name} has declared {n.type}</div>
+            <div> <strong>{n.type.toUpperCase()}</strong> [{n.created_at}] </div>
+            <div> {(n.participant?.name ?? `User ${n.participant_id}`)} has declared {n.type}</div>
+            <div>{ `User ${n.participant_id}`}</div>
+            <div> Participant {n.participant_id}  </div>
+            <strong>{n.message}</strong>
           </div>
         ))}
       </div>
