@@ -11,7 +11,7 @@ const Datalist: React.FC = () =>{
 
     const [fectchedUsers, setFetchedUser] = useState<UserItem[]>([]);
     const [loading, setLoading] = useState(true);
-    const [users, setUsers] = useState<{email:string; role:string}[]>([]);
+    //const [users, setUsers] = useState<{email:string; role:string}[]>([]);
 
     const fetchList = async() => {
 

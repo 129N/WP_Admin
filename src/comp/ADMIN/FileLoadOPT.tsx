@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo } from "react";
-import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap } from "react-leaflet";
+import React, { useMemo } from "react";
+import { MapContainer, TileLayer, Polyline, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import type { LatLngBounds, LatLngTuple } from "leaflet";
+import type {  LatLngTuple } from "leaflet";
 
 
 type Waypoint = {
@@ -20,15 +20,6 @@ type TrackMapProps = {
   Waypoints?: Waypoint[];
   trackPoints?: TrackPoint[];
 };
-
-
-function ForceResize() {
-  const map = useMap();
-  useEffect(() => {
-    setTimeout(() => map.invalidateSize(), 300);
-  }, [map]);
-  return null;
-}
 
 
 const TrackMap: React.FC<TrackMapProps> = ({ Waypoints = [], trackPoints = [] }) => {

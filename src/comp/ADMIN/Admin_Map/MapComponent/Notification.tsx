@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import"../Layout/MapView.css";
 import type { Notification_Interface } from "../adminPanel";
 
@@ -11,9 +10,6 @@ export default function NotificationQueue({notification} : NotificationProps){
 //The data is coming from adminPanel.tsx
 
 // initial activate sentence 
-const [initialized, setInitialized] = useState(false);
-const [finalList, setFinalList] = useState<Notification_Interface[]>([]);
-
 const systemNotification: Notification_Interface = 
    {
       id: 0,

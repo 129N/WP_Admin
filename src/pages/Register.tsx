@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { BASE_URL } from "../App";
-import { data, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import '../pages/layouts/Registration.css';
 import Header from "../comp/header";
 

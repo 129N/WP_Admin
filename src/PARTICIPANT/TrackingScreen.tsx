@@ -10,6 +10,7 @@ import getBearing from "../comp/GPXFunction";
 // import getDistance from 'geolib/es/getDistance';
 import { xml2js } from "xml-js";
 import { BASE_URL } from "../App";
+import getDistance from "geolib/es/getPreciseDistance";
 
 type Waypoint = {
   name: string;

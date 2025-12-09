@@ -44,7 +44,6 @@ export interface participants_Interface {
   status: string;
 }
 
-
 export interface Notification_Interface {
   id: number;
   name: string;
@@ -66,21 +65,23 @@ export interface Notification_Interface {
 export default function AdminPanel() {
 
 // EventId from registered Event
-    const [events, setEvents] = useState<Event[]>([]);
     const [selectedEvent, setSelectedEvent] = useState<null | Event>(null);
     const [participants, setParticipants] = useState<participants_Interface[]>([]);
     const [event_code, setEventCode] = useState(''); 
     const [token, setToken] = useState("");
 
-      const [loading, setLoading] = useState(false);
-const [waypoints, setWaypoints] = useState<Waypoint[]>([]);
-const [trackpoints, setTrackpoints] = useState<TrackPoint[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [waypoints, setWaypoints] = useState<Waypoint[]>([]);
+    const [trackpoints, setTrackpoints] = useState<TrackPoint[]>([]);
 
 //Notification 
   const [locations, setLocations] = useState();
   const [eventId, setEventId] = useState(''); 
   const [notifications, setNotifications] = useState<Notification_Interface[]> ([]);
 
+//Page change
+const role = localStorage.getItem("userRole");
+const isAdmin = role === "admin";
 
 //----------------------
 // initiate loading   
@@ -122,11 +123,10 @@ return () => clearInterval(interval);
 // }, [event_code]);
 
 
-
 //Event code typing 
  const handleSaveEventId = async() => {
 // check whether the eventId is real or not.  
-    if(!event_code || !token){
+    if(!event_code ){
         alert("Invalid EventId");
         return;
     }
@@ -310,18 +310,18 @@ const fetchNotifications = async(event_code: string) =>{
       </div>
 
         <div className="admin-map-layout">
-
+{/* 1. Map (everyone sees) */}
           <div className="Center">
               <AdminMapView waypoints = {waypoints} trackpoints = {trackpoints}/> 
           </div>
-
+{/* 2. Participant list (everyone sees) */}
           <div className="Left">
             <ParticipantStack participants={participants}/>  {/* from participants_Interface NotificationProps */}
           </div>
-          
-          <div className="Bottom">
-              <NotificationQueue notification={notifications} />  {/* from Notification_Interface NotificationProps */}
-          </div>
+{/* 3. Notifications (Admins sees) */}         
+          { isAdmin && (<div className="Bottom">
+                <NotificationQueue notification={notifications} />  {/* from Notification_Interface NotificationProps */}
+          </div>)}
 
         </div>
         

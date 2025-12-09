@@ -1,17 +1,9 @@
-
-
-
-
-import { useNavigate, useRoutes } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../pages/layouts/Home.css';
-
 import Header from "../comp/header";
-import { useState } from 'react';
-
 
 export default function AdminHome() {
     const navigate = useNavigate();
-    const [role, setRole] = useState();
 
     return (
 
@@ -43,9 +35,6 @@ export default function AdminHome() {
 
 
         </div>
-
-
-
 
     </div>
 

@@ -1,14 +1,8 @@
-
-
-
-import React, { useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../pages/layouts/Home.css';
-import AdminPanel from '../comp/ADMIN/Admin_Map/adminPanel';
 
 export default function AudiencePage() {
     const navigate = useNavigate();
-
 
     return (
 
@@ -23,12 +17,12 @@ export default function AudiencePage() {
                 Back Home
             </button>
 
-            <button className='btn green'  onClick={() => navigate("/")}>
-                View map
+            <button className='btn green'  onClick={() => navigate("/admin_control")}>
+                Watch competiton
             </button>
 
             <button className='btn orange'  onClick={() => navigate("/")}>
-                Get Digit code
+                View History
             </button>
 
             <button className='btn blue'  onClick={() => navigate("/")}>
@@ -36,10 +30,6 @@ export default function AudiencePage() {
             </button>
 
     </div>
-
-
-
-
 
     </div>
 

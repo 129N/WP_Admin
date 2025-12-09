@@ -17,8 +17,6 @@ type Event = {
 
  const  EventTableLists : React.FC = () => {
 
-  const { id } = useParams();
-
     const [events, setEvents] = useState<Event[]>([]);
     const [userRole, setUserRole] = useState<string|null>(null);
     const [loading, setLoading] = useState(false);
