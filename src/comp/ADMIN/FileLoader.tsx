@@ -37,6 +37,8 @@ const GPXLoader: React.FC = () => {
 const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [eventCode, setEventCode] = useState("");
 
+const [fileId, setFileId] = useState<number | null>(null);
+const [uploadFileID, setUploadedFileId] = useState();
 
   const ParseGPX = (gpxText: string)=>{
     // this any removes all undeclared words
@@ -120,7 +122,7 @@ const parsedTrackPoints : RawTrackPoint []= extractTrackPints(trk);
 
 // OLD UPLOAD METHOD
   const handleGeneric = async () => {
-    console.log("GENERIC VERSION \n Uploading to backend");
+    console.log("GENERIC VERSION \n Uploading to backend with gpx id");
     try {
 
         const token =  localStorage.getItem("authToken"); // or token
@@ -132,20 +134,24 @@ const parsedTrackPoints : RawTrackPoint []= extractTrackPints(trk);
 
         const formdata = new FormData();
          formdata.append("gpx_file", selectedFile); // ✅ Laravel expects this exact key name
-           // LARAVEL SIDE ✅ Route::post('/gpx-upload', [WPReactController::class, 'store']);  
+         formdata.append("route_name", "Web Upload " + Date.now()); // optional for UI
+          // LARAVEL SIDE  Route::post('/ADM_GPX_UPLOAD', [GpxController::class, 'store']); // reuse the store
+          if (fileId) formdata.append("file_id", String(fileId));
 
-        const response = await fetch(`${BASE_URL}/gpx-upload`, {
+        const response = await fetch(`${BASE_URL}/ADM_GPX_UPLOAD`, {
         method: "POST",
-        headers: { 
-             Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}`,},
         body : formdata,
       });
 
       const result = await response.json();
       if(response.ok){
         console.log("Upload success!", result);
-        alert('File uploaded to backend successfully!');
+        setUploadedFileId(result.file_id);
+        setFileId(result.file_id);
+
+        alert( `GPX upload complete\nRoute: ${result.route_name ?? "Unnamed"}\nfile_id: ${result.file_id}`);
+
       }
       else{
         console.log("Upload Error", result);

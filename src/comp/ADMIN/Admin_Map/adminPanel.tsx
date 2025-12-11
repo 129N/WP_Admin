@@ -124,7 +124,8 @@ return () => clearInterval(interval);
 
 
 //Event code typing 
- const handleSaveEventId = async() => {
+
+const handleSaveEventId = async() => {
 // check whether the eventId is real or not.  
     if(!event_code ){
         alert("Invalid EventId");
@@ -188,8 +189,9 @@ const fetchParticipants  = async(event_code:string) =>{
 // check the validity 
   const fetchRouteData = async (event_code: string) => {
     try {
-      const wRes = await fetch(`${BASE_URL}/events/${event_code}/waypoints`);
-      const tRes = await fetch(`${BASE_URL}/events/${event_code}/trackpoints`);
+
+      const wRes = await fetch(`${BASE_URL}/events/${event_code}/waypoints`); //Route::get('/events/{event_code}/waypoints', [WPReactController::class, 'getEventWaypoints']); 
+      const tRes = await fetch(`${BASE_URL}/events/${event_code}/trackpoints`); //        Route::get('/events/{event_code}/trackpoints', [WPReactController::class, 'getEventTrackpoints']); 
 
       if (!wRes.ok || !tRes.ok) throw new Error("Route fetch failed");
 

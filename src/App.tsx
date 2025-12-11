@@ -18,7 +18,7 @@ import GPXLoader from './comp/ADMIN/FileLoader';
 import TrackMap from './comp/ADMIN/FileLoadOPT';
 import Datalist from './comp/ADMIN/admin_DataList';
 import AdminPanel from './comp/ADMIN/Admin_Map/adminPanel';
-
+import GpxFileList from './comp/ADMIN/GpxFileList';
 export const BASE_URL =import.meta.env.VITE_API_BASE_URL;
 
 function App() {
@@ -49,6 +49,7 @@ function App() {
       <Route path="/Fileloader" element={<GPXLoader />} />
       <Route path="/MapView" element={<TrackMap />} />
       <Route path="/Datalist" element={<Datalist />} />
+      <Route path="/GpxFileList" element={<GpxFileList />} />
     </Routes>
   </BrowserRouter>
 

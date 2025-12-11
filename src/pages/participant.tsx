@@ -42,7 +42,7 @@ const Participant: React.FC = () => {
 
         <button
           className="btn orange"
-          onClick={() => navigate("/newfileloader")}
+          onClick={() => navigate("/Fileloader")}
         >
           New File Load
         </button>

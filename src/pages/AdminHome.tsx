@@ -11,7 +11,7 @@ export default function AdminHome() {
         <Header/>
         {/* <AdminPanel/>  */}
 
-        <h1> Admin.tsx </h1>
+        <h1> AdminHome.tsx </h1>
 
 
         <div className='button-group'>
@@ -30,6 +30,11 @@ export default function AdminHome() {
                 </button>
 
                 <button className='btn orange' onClick={() => navigate("/Datalist")}>
+                    Users fetched lists
+                </button>
+
+                
+                <button className='btn lew' onClick={() => navigate("/GpxFileList")}>
                     Users fetched lists
                 </button>
 
