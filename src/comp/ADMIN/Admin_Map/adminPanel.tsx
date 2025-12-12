@@ -96,31 +96,31 @@ const isAdmin = role === "admin";
     });
 
 //Notification
-useEffect(() =>{
-      if(!eventId) return; 
+// useEffect(() =>{
+//       if(!eventId) return; 
 
-  const interval = setInterval(() => {
-  fetchNotifications(event_code);
-  }, 3000);
-return () => clearInterval(interval);
-}, [eventId]);
+//   const interval = setInterval(() => {
+//   fetchNotifications(event_code);
+//   }, 3000);
+// return () => clearInterval(interval);
+// }, [eventId]);
 
 
-// useEffect(() => {
-//    if (!event_code) return;
+useEffect(() => {
+   if (!event_code) return;
 
-//    fetchParticipants(event_code);
-//    fetchNotifications(event_code);
-//    fetchRouteData(event_code);
+   fetchParticipants(event_code);
+   fetchNotifications(event_code);
+   fetchRouteData(event_code);
 
-//    const interval = setInterval(() => {
-//       fetchParticipants(event_code);
-//       fetchNotifications(event_code);
-//       fetchRouteData(event_code);
-//    }, 3000);
+   const interval = setInterval(() => {
+      fetchParticipants(event_code);
+      fetchNotifications(event_code);
+      fetchRouteData(event_code);
+   }, 3000);
 
-//    return () => clearInterval(interval);
-// }, [event_code]);
+   return () => clearInterval(interval);
+}, [event_code]);
 
 
 //Event code typing 

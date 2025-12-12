@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import '../pages/layouts/Home.css';
+import Header from '../comp/header';
 
 export default function AudiencePage() {
     const navigate = useNavigate();
@@ -9,7 +10,7 @@ export default function AudiencePage() {
     <div className='AudienceContainer'>
         
         {/* <AdminPanel/>  */}
-
+<Header/>
         <h1> Audience.tsx </h1>
 
     <div className='button-group'>
@@ -23,10 +24,6 @@ export default function AudiencePage() {
 
             <button className='btn orange'  onClick={() => navigate("/")}>
                 View History
-            </button>
-
-            <button className='btn blue'  onClick={() => navigate("/")}>
-                Users fetched lists
             </button>
 
     </div>

@@ -37,14 +37,6 @@ const systemNotification: Notification_Interface =
 // INITIAL ACTIVATION    
 //----------------------
 
-// if (notification.length === 0) {
-//     return (
-//       <div className="Stack_Container">
-//         <h3>Notifications</h3>
-//         <p>No Event code</p>
-//       </div>
-//     );
-//   }
 
 //----------------------
 // RENDERING ZONE    
