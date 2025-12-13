@@ -1,54 +1,99 @@
-.styleContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 24px;
-  background-color: #fafafa;
+/* Page wrapper */
+.listPage {
   min-height: 100vh;
-  box-sizing: border-box;
+  background: #fafafa;
 }
 
-.sectionTitle {
-  font-size: 20px;
-  font-weight: 700;
-  color: #222;
+/* Content area */
+.listContent {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+/* Header row */
+.listHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 16px;
 }
 
-.button {
-  background-color: #007aff;
-  color: #fff;
-  border: none;
-  padding: 10px 18px;
+.listHeader h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Reuse global button system */
+.btn {
+  padding: 8px 14px;
   border-radius: 8px;
+  border: none;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
-.button:hover {
-  background-color: #005bb5;
+.btn--primary {
+  background: #2563eb;
+  color: #fff;
 }
 
+/* States */
+.listHint {
+  color: #6b7280;
+  text-align: center;
+  margin-top: 24px;
+}
+
+/* List */
 .listContainer {
-  margin-top: 20px;
-  width: 100%;
-  max-width: 600px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-}
-
-.participantCard {
-  background-color: #fff;
-  border: 1px solid #ddd;
   border-radius: 10px;
-  padding: 14px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e5e7eb;
 }
 
-.userText {
-  margin: 4px 0;
-  color: #333;
-  font-size: 15px;
+/* Rows */
+.listRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.95rem;
+}
+
+.listRow:last-child {
+  border-bottom: none;
+}
+
+/* Columns */
+.email {
+  color: #111827;
+}
+
+.role {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: capitalize;
+}
+
+/* Role colors (subtle) */
+.role--admin {
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+}
+
+.role--competitor {
+  background: rgba(34, 197, 94, 0.1);
+  color: #16a34a;
+}
+
+.role--audience {
+  background: rgba(168, 85, 247, 0.1);
+  color: #9333ea;
 }

@@ -55,7 +55,7 @@ const Registration: React.FC = () => {
     const handleDelete = async() => {
         console.log('Delete is in the process');
 
-        const token = await localStorage.getItem('token');
+        const token = localStorage.getItem('token');
 
         try{
             const res = await fetch(`${BASE_URL}/registered_users`, {
@@ -151,101 +151,103 @@ const Registration: React.FC = () => {
     }
    };
 
-    return(
- <div className="registration-container">
-    <Header/>
-      <h2>Registration</h2>
+return (
+  <div className="homePage page--registration">
+    <Header />
 
-      <div className="role-section">
-        <h3>Select Role:</h3>
-        <div className="role-buttons">
+    <main className="content content--narrow">
+      <div className="registration-container">
+        <h2 className="registration-title">Registration</h2>
 
+        {/* Role selection */}
+        <div className="role-section">
+          <h3>Select Role</h3>
+          <div className="role-buttons">
             <button
-                className={`role-btn ${role === "competitor" ? "active" : ""}`}
-                onClick={() => setRole("competitor")}
+              className={`role-btn ${role === "competitor" ? "active" : ""}`}
+              onClick={() => setRole("competitor")}
             >
-                Competitor
+              Competitor
             </button>
+
             <button
-                className={`role-btn ${role === "admin" ? "active" : ""}`}
-                onClick={() => setRole("admin")}
+              className={`role-btn ${role === "admin" ? "active" : ""}`}
+              onClick={() => setRole("admin")}
             >
-                Admin
-  </button>
- 
- 
-        </div>
-      </div>
-
-      <div className="form">
-        <label>Email</label>
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <label>Password</label>
-        <input
-          type="password"
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <label>Name</label>
-        <input
-          type="text"
-          placeholder="Enter your name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-
-        <div className="button-button-group">
-
-          <button className="btn register" onClick={handleRegister}>
-            Register
-          </button>
-          <button className="btn fetch" onClick={fetchUsers}>
-            Fetch
-          </button>
-
-        <button className="btn delete" onClick={handleDelete}>
-            Delete Data
-          </button>
-          <button className="btn test" onClick={testConnection}>
-            Connection Test
-          </button>
-        </div>
-      </div>
-
-        <div className="Access Login">
-            {success ? <button onClick={handleAlert}>
-            Go to Login Page?
-        </button> : <p>Please Login </p>} 
-
+              Admin
+            </button>
+          </div>
         </div>
 
+        {/* Form */}
+        <div className="form">
+          <label>Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
+          <label>Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
+          <label>Name</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
 
-      <div className="result">
-        <h3>Fetched Users</h3>
-        {fetchedUsers.length > 0 ? (
-          fetchedUsers.map((user, index) => (
-            <div key={index} className="user-card">
-              <p>📧 {user.email}</p>
-              <p>🎭 {user.role}</p>
-              <p>👤 {user.name}</p>
-            </div>
-          ))
-        ) : (
-          <p className="no-data">No data fetched yet.</p>
-        )}
+          <div className="button-group">
+            <button className="btn btn--success" onClick={handleRegister}>
+              Register
+            </button>
+            <button className="btn btn--primary" onClick={fetchUsers}>
+              Fetch
+            </button>
+            {/* <button className="btn btn--danger" onClick={handleDelete}>
+              Delete
+            </button> */}
+            <button className="btn btn--secondary" onClick={testConnection}>
+              Test
+            </button>
+          </div>
+        </div>
+
+        {/* Post-register */}
+        <div className="access-login">
+          {success ? (
+            <button className="linkBtn" onClick={handleAlert}>
+              Go to Login Page →
+            </button>
+          ) : (
+            <p className="hint">Please register, then log in</p>
+          )}
+        </div>
+
+        {/* Result */}
+        <div className="result">
+          <h3>Fetched Users</h3>
+          {fetchedUsers.length > 0 ? (
+            fetchedUsers.map((user, i) => (
+              <div key={i} className="user-card">
+                <p>📧 {user.email}</p>
+                <p>🎭 {user.role}</p>
+                <p>👤 {user.name}</p>
+              </div>
+            ))
+          ) : (
+            <p className="no-data">No data fetched yet.</p>
+          )}
+        </div>
       </div>
-    </div>
-    );
+    </main>
+  </div>
+);
 };
 
 export default Registration;

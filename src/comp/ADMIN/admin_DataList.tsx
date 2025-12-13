@@ -52,30 +52,39 @@ const Datalist: React.FC = () =>{
         fetchList();
     }, []);
 
-    return(
-  <div className="styleContainer">
-    <Header/>
-      <h2 className="sectionTitle">Datalist.tsx</h2>
+return (
+    <div className="listPage">
+      <Header />
 
-      <button className="button" onClick={fetchList}>
-        Fetch
-      </button>
-
-      {loading ? (
-        <p>Reload Please</p>
-      ) : (
-        <div className="listContainer">
-          {fectchedUsers.map((item, index) => (
-            <div key={index} className="participantCard">
-              <p className="userText">📧 {item.email}</p>
-              <p className="userText">🎭 {item.role}</p>
-            </div>
-          ))}
+      <main className="listContent">
+        <div className="listHeader">
+          <h2>User List</h2>
+          <button className="btn btn--primary" onClick={fetchList}>
+            Refresh
+          </button>
         </div>
-      )}
+
+        {loading ? (
+          <p className="listHint">Loading data…</p>
+        ) : fectchedUsers.length === 0 ? (
+          <p className="listHint">No users found.</p>
+        ) : (
+          <div className="listContainer">
+            {fectchedUsers.map((item, index) => (
+              <div key={index} className="listRow">
+                <span className="email">{item.email}</span>
+                <span className={`role role--${item.role}`}>
+                  {item.role}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </main>
     </div>
-    );
+  );
 };
+
 
 
 export default Datalist;

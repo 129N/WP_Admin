@@ -51,7 +51,7 @@
 
 /* Audience */
 .brandDot--audience {
-  --dot-color: #a855f7;
+  --dot-color: #ffe600;
   --dot-glow: rgba(168, 85, 247, 0.35);
 }
 
@@ -149,7 +149,7 @@
 
 /* Audience (future-proof) */
 .hero--audience {
-  --hero-accent: rgba(168,85,247,0.12);
+  --hero-accent: rgb(238, 255, 0);
   --hero-border: rgba(168,85,247,0.25);
 }
 
