@@ -2,19 +2,27 @@
 import { MapContainer, Marker, Polyline, TileLayer } from "react-leaflet";
 // import type { LatLngBounds, LatLngTuple } from "leaflet";
 import"../Layout/MapView.css";
-import type { Waypoint, TrackPoint } from "../adminPanel";
-
+import type { Waypoint, TrackPoint, LiveLocation } from "../adminPanel";
+import L from "leaflet";
 
 export interface RouteProps {
     // waypoints: { waypoints : Waypoint[]} | null ;
     //  trackpoints: {trackpoints : TrackPoint[] }| null;
   waypoints: Waypoint[] | null;
   trackpoints: TrackPoint[] | null;
+  livelocations: LiveLocation[] | null;
 }
 
 
-export default function AdminMapView({waypoints, trackpoints}: RouteProps) {
+export default function AdminMapView({waypoints, trackpoints, livelocations}: RouteProps) {
    // const hasRoute = waypoints && waypoints.length > 0 && trackpoints && trackpoints.length > 0;
+
+
+const participantIcon = new L.Icon({
+  iconUrl: "/participant.png",
+  iconSize: [24, 24],
+  iconAnchor: [12, 12],
+});
 
 const wpts = waypoints|| [];
   const trks = trackpoints || [];
@@ -34,16 +42,27 @@ return(
                 {/* When route exists */}
                 {hasRoute && (
                     <>
+                    {/* Waypoints */}
                         {waypoints!.map((wp: any, idx: number) => (
                             <Marker key={idx} position={[wp.lat, wp.lon]} />
                         ))}
-
+                    {/* Route PolyLine */}
                         <Polyline
                             positions={trackpoints!.map((tp:any) => [tp.lat, tp.lon])}
                             pathOptions={{ color: "red", weight: 3 }}
                         />
                     </>
                 )}
+
+                {/* Live participant locations */}
+                {livelocations && livelocations.map((loc: any) => (
+                <Marker
+                    key={loc.user_id}
+                    position={[loc.lat, loc.lon]}
+                    icon={participantIcon}
+                />
+                ))}
+
 
                 {/* When no route data */}
                 {!hasRoute && (

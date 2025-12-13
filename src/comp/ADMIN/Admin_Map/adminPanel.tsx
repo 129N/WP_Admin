@@ -62,6 +62,14 @@ export interface Notification_Interface {
   };
 }
 
+export interface LiveLocation {
+  user_id: number;
+  lat: number;
+  lon: number;
+  speed?: number;
+  heading?: number;
+}
+
 export default function AdminPanel() {
 
 // EventId from registered Event
@@ -79,6 +87,9 @@ export default function AdminPanel() {
   const [eventId, setEventId] = useState(''); 
   const [notifications, setNotifications] = useState<Notification_Interface[]> ([]);
 
+//Location
+  const [livelocations, setLiveLocations] = useState<LiveLocation[]>([]);
+
 //Page change
 const role = localStorage.getItem("userRole");
 const isAdmin = role === "admin";
@@ -94,7 +105,7 @@ const isAdmin = role === "admin";
         };
             loadUserInfo();
     });
-
+// THIS IS THE OLD VERSION UPDATE
 //Notification
 // useEffect(() =>{
 //       if(!eventId) return; 
@@ -112,19 +123,22 @@ useEffect(() => {
    fetchParticipants(event_code);
    fetchNotifications(event_code);
    fetchRouteData(event_code);
+   fetchLiveLocation(event_code);
 
    const interval = setInterval(() => {
       fetchParticipants(event_code);
       fetchNotifications(event_code);
       fetchRouteData(event_code);
+      fetchLiveLocation(event_code);
    }, 3000);
 
    return () => clearInterval(interval);
 }, [event_code]);
 
 
-//Event code typing 
-
+//----------------------
+// Event code typing  
+//----------------------
 const handleSaveEventId = async() => {
 // check whether the eventId is real or not.  
     if(!event_code ){
@@ -167,7 +181,9 @@ const handleSaveEventId = async() => {
 
   };
 
-// Fetch the event participants
+//----------------------
+// Fetch the event participants 
+//----------------------
 const fetchParticipants  = async(event_code:string) =>{  
     console.log("Participants fetching....");
     try{
@@ -186,8 +202,10 @@ const fetchParticipants  = async(event_code:string) =>{
     }
 };
 
+//----------------------
 // check the validity 
-  const fetchRouteData = async (event_code: string) => {
+//----------------------
+const fetchRouteData = async (event_code: string) => {
     try {
 
       const wRes = await fetch(`${BASE_URL}/events/${event_code}/waypoints`); //Route::get('/events/{event_code}/waypoints', [WPReactController::class, 'getEventWaypoints']); 
@@ -209,9 +227,12 @@ const fetchParticipants  = async(event_code:string) =>{
     } catch (err) {
       console.error("Route Fetch Error:", err);
     }
-  };
+};
 
-// Delete the event. from Route::delete('/events/{event_code}/gpx', [WPReactController::class, 'deleteEventGpx']);
+
+//----------------------
+// EVENT DELETE. from Route::delete('/events/{event_code}/gpx', [WPReactController::class, 'deleteEventGpx']);
+//----------------------
 const handleDeleteGpx = async() =>{
   if(!event_code){
     alert("No event selected.");
@@ -255,6 +276,9 @@ const handleDeleteGpx = async() =>{
   }
 };
 
+//----------------------
+// NOTIFICAION
+//----------------------
 const fetchNotifications = async(event_code: string) =>{
     try{
         const res = await fetch(`${BASE_URL}/events/${event_code}/notifications`);
@@ -268,8 +292,30 @@ const fetchNotifications = async(event_code: string) =>{
     }
 };
 
-  
-    return(
+//----------------------
+// LOCATION
+//----------------------
+
+const fetchLiveLocation = async(event_code:string) => {
+  try{
+    const res = await fetch(`${BASE_URL}/events/${event_code}/locations`);
+    if(!res.ok) throw new Error("Failed to fetch locations");
+
+    const data = await res.json();
+    setLiveLocations(data);
+  }
+  catch (err) {
+    console.error("Live location error:", err);
+  }
+};
+
+
+
+
+//----------------------
+// RENDERING
+//---------------------- 
+  return(
     <>
 
         {selectedEvent ? (
@@ -314,7 +360,7 @@ const fetchNotifications = async(event_code: string) =>{
         <div className="admin-map-layout">
 {/* 1. Map (everyone sees) */}
           <div className="Center">
-              <AdminMapView waypoints = {waypoints} trackpoints = {trackpoints}/> 
+              <AdminMapView waypoints = {waypoints} trackpoints = {trackpoints} livelocations = {livelocations}/> 
           </div>
 {/* 2. Participant list (everyone sees) */}
           <div className="Left">
