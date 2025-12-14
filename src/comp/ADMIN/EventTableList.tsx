@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../App";
 import Header from "../header";
 import { useParams } from "react-router-dom";
-
-
+import "../ADMIN/Layout/EventTableLists.css";
 type Event = {
   id: number;
   event_title: string;
@@ -99,61 +98,74 @@ const handleDeleteEvent = async(id:number, event_title : string ) => {
   }, []);
 
 
- return (
-    <main className="event-container">
-      <Header/>
-      <h2 className="header">Fetched Event List</h2>
+return (
+  <main className="eventPage">
+    <Header />
 
-      <button className="fetch-button" onClick={handleFetchEvents}>
-        {loading ? "Loading..." : "Reload"}
+    <section className="eventHeader">
+      <h2>Event List</h2>
+
+      <button
+        className="btn btn--primary"
+        onClick={handleFetchEvents}
+        disabled={loading}
+      >
+        {loading ? "Loading…" : "Reload"}
       </button>
+    </section>
 
-      {events.length > 0 ? (
-        <div className="event-list">
-          {events.map((event) => (
-            <div key={event.id} className="event-card">
-              <div className="event-info">
-                <h3>{event.event_title}</h3>
-                <p>{event.description}</p>
-                <p>
-                  <strong>Date:</strong>{" "}
-                  {new Date(event.event_date).toLocaleString()}
-                </p>
-                <p>
-                  <strong>Created by:</strong> {event.creator_name}
-                </p>
-                <p>
-                  <strong>Event Code:</strong> {event.event_code}
-                </p>
-              </div>
+    {events.length > 0 ? (
+      <section className="eventList">
+        {events.map((event) => (
+          <article key={event.id} className="eventCard">
+            <div className="eventAccent" />
 
-              <div className="button-row">
-                <button
-                  className="view-button"
-                  onClick={() => navigate(`/EventRegistration/${event.id}`)}
-                >
-                  View
-                </button>
+            <div className="eventMeta">
+              <h3 className="eventTitle">{event.event_title}</h3>
+              <p className="eventDesc">{event.description}</p>
 
-                {userRole === "admin" && (
-                  <button
-                    className="delete-button"
-                    onClick={() =>
-                      handleDeleteEvent(event.id, event.event_title)
-                    }
-                  >
-                    Delete
-                  </button>
-                )}
+              <div className="eventBadges">
+                <span className="badge badge--date">
+                  📅 {new Date(event.event_date).toLocaleString()}
+                </span>
+                <span className="badge badge--creator">
+                  👤 {event.creator_name}
+                </span>
+                <span className="badge badge--code">
+                  🔑 {event.event_code}
+                </span>
               </div>
             </div>
-          ))}
-        </div>
-      ) : (
-        <p className="empty-text">No events yet.</p>
-      )}
-    </main>
-  );
+
+            <div className="eventActions">
+              <button
+                className="btn btn--view"
+                onClick={() => navigate(`/EventRegistration/${event.id}`)}
+              >
+                View
+              </button>
+
+              {userRole === "admin" && (
+                <button
+                  className="btn btn--danger"
+                  onClick={() =>
+                    handleDeleteEvent(event.id, event.event_title)
+                  }
+                >
+                  Delete
+                </button>
+              )}
+            </div>
+          </article>
+        ))}
+      </section>
+    ) : (
+      <p className="emptyState">No events available.</p>
+    )}
+  </main>
+);
+
+
 }
 
 export default EventTableLists

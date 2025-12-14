@@ -239,7 +239,7 @@ const handleForEvent = async() =>{
   return (
     <div className="gpx-container">
       <Header/>
-      <h2 className="title">NEWfileloader</h2>
+      <h2 className="title">NEWfileloader (FileLoader.tsx)</h2>
 
       <label className="fileLabel">
         Load GPX File

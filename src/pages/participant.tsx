@@ -23,12 +23,6 @@ const Participant: React.FC = () => {
       icon: "📋",
     },
     {
-      title: "Participate",
-      description: "Join and track your active competition",
-      route: "/competiton",
-      icon: "🏃",
-    },
-    {
       title: "Waypoint Screen",
       description: "Navigation & waypoint guidance",
       route: "/wpscreen",

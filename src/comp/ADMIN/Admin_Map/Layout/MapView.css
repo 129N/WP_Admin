@@ -32,6 +32,8 @@ https://css-tricks.com/snippets/css/complete-guide-grid/
 .Center {
   grid-area: center;
   position: relative;
+  height: 95%;
+  width: 100%;
 }
 
 .Bottom {
@@ -54,19 +56,56 @@ https://css-tricks.com/snippets/css/complete-guide-grid/
   color: white;
 }
 
-.EventSelector button{
-  
-    background-color: #ff00c8;
-    color: white;
+.EventSelector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
 }
 
-.Event_information{
+.EventSelector input {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #c7d2fe;
+  font-weight: 600;
+  width: 200px;
+}
+
+.EventSelector button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.EventSelector button:first-of-type {
+  background: #2563eb;
+  color: white;
+}
+
+
+.Event_information {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
-  gap: 8px;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 12px 24px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #f0f7ff, #e0ecff);
+  border: 1px solid #c7d2fe;
 }
 
+.Event_information h3,
+.Event_information h4 {
+  margin: 0;
+  font-weight: 700;
+  color: #1e3a8a;
+}
 
 .map-wrapper{
   width: 100%;
