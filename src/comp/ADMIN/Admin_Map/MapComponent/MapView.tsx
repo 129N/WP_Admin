@@ -4,6 +4,8 @@ import { MapContainer, Marker, Polyline, TileLayer } from "react-leaflet";
 import"../Layout/MapView.css";
 import type { Waypoint, TrackPoint, LiveLocation } from "../adminPanel";
 import L from "leaflet";
+import { MdRunCircle } from "react-icons/md";
+import { renderToString } from "react-dom/server";
 
 export interface RouteProps {
     // waypoints: { waypoints : Waypoint[]} | null ;
@@ -17,12 +19,17 @@ export interface RouteProps {
 export default function AdminMapView({waypoints, trackpoints, livelocations}: RouteProps) {
    // const hasRoute = waypoints && waypoints.length > 0 && trackpoints && trackpoints.length > 0;
 
-
-const participantIcon = new L.Icon({
-  iconUrl: "/participant.png",
-  iconSize: [24, 24],
-  iconAnchor: [12, 12],
+const participantIcon = L.divIcon({
+  html: renderToString(
+    <div className="participant-marker">
+      <MdRunCircle size={28} color="#2563EB" />
+    </div>
+  ),
+  className: "",        // IMPORTANT: remove default leaflet styles
+  iconSize: [28, 28],
+  iconAnchor: [14, 14],
 });
+
 
 const wpts = waypoints|| [];
   const trks = trackpoints || [];

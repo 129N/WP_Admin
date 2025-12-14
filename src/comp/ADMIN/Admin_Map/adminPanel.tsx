@@ -84,7 +84,6 @@ export default function AdminPanel() {
 
 //Notification 
   const [locations, setLocations] = useState();
-  const [eventId, setEventId] = useState(''); 
   const [notifications, setNotifications] = useState<Notification_Interface[]> ([]);
 
 //Location
@@ -122,13 +121,13 @@ useEffect(() => {
 
    fetchParticipants(event_code);
    fetchNotifications(event_code);
-   fetchRouteData(event_code);
+  //  fetchRouteData(event_code);
    fetchLiveLocation(event_code);
 
    const interval = setInterval(() => {
       fetchParticipants(event_code);
       fetchNotifications(event_code);
-      fetchRouteData(event_code);
+      // fetchRouteData(event_code);
       fetchLiveLocation(event_code);
    }, 3000);
 
