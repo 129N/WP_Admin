@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import Echo from "laravel-echo";
+import "../Layout/EmergencyChat.css";
+import { BASE_URL } from "../../../../App";
 import Pusher from "pusher-js";
 
-import { BASE_URL } from "../../../../App";
+(window as any).Pusher = Pusher;
 
 interface ChatMsg {
     from: number;
@@ -13,87 +15,121 @@ interface ChatMsg {
     lon?: number;
 }
 
-export default function emergencyChat() {
+export default function EmergencyChat() {
 
-    const location = useLocation();
-    const { event_code, participant_id } = location.state || {};
+  const { event_code, participant_id } = useParams<{
+  event_code: string;
+  participant_id: string;
+}>();
+
+
     const [messages, setMessages] = useState<ChatMsg[]>([]);
     const [input, setInput] = useState("");
 
-
     useEffect(() => {
         if(!event_code || !participant_id) return;
+        console.log("event_code:", event_code);
+        console.log("participant_id:", participant_id);
 
-        const channleName =  `private-emergency.event.${event_code}.participant.${participant_id}`;
+        const CH =`emergency.event.${event_code}.participant.${participant_id}`;
 
         const echo = new Echo({
-            broadcaster: "pusher",
+            broadcaster: "reverb",
             key: "local",
             wsHost: "localhost",
-            wsPort: 8080, // Reverb default
-            wssPort: 8080,
+            wsPort: 8080,
             forceTLS: false,
             encrypted: false,
-            disableStats: true,
-            enabledTransports: ["ws", "wss"],
-                client: new Pusher("local", {
-                    cluster: "mt1",
-                    wsHost: "localhost",
-                    wsPort: 8080,
-                    forceTLS: false,
-                }), 
-        });
+                        
+            authEndpoint: `${BASE_URL}/broadcasting/auth`,
+            auth: {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+                }, 
+        }  });
 
-        echo.private(channleName).listen(".emergency.message", (e:any) => {
-            setMessages((prev) => [...prev, e.payload]);
-        });
+        echo.private(CH).listen(".emergency.message", (e:any) => {
+            console.log("🔥 RECEIVED:", e);
+
+            const p = e.payload; // REAL DATA IS HERE
+
+                setMessages(prev => [...prev, {
+                    from: p.from,
+                    message: p.message,
+                    time: p.time,
+                    lat: p.lat,
+                    lon: p.lon,
+                }]);
+            });
 
         return () => {
-            echo.leave(channleName);
+            echo.leave(CH);
         };
        
     }, [event_code, participant_id]);
 
 
     const sendMessage = async () => {
+
+        const trimmed = input.trim();
+        if(!trimmed) return;
+
+        console.log(trimmed);
+
         const token = localStorage.getItem("authToken");
 
-        const res = await fetch(`${BASE_URL}/${event_code}/emergency/${participant_id}/message`, 
+        const res = await fetch(`${BASE_URL}/event/${event_code}/emergency/${participant_id}/message`, 
             {
                 method: "POST", 
                 headers:{
                     Authorization:`Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({messages: input}),
+                body: JSON.stringify({message: input}),
             });
 
         if(!res.ok) {throw new Error("Failed to fetch")};
-
             setInput("");
     };
 
 //----------------------
 // RENDERING ZONE    
 //----------------------
-    return(
-    <div>
-        <h2>🚨 Emergency Chat</h2>
+return (
+  <div className="emergency-chat-container">
+    <h2 className="emergency-chat-title">🚨 Emergency Chat</h2>
 
-        <div style={{ height: 300, overflowY: "auto" }}>
-            {messages.map((m, i) => (
-            <div key={i}>
-                <strong>User {m.from}</strong>: {m.message}
-            </div>
-            ))}
+    <div className="emergency-chat-messages">
+      {messages.length === 0 && (
+        <div className="emergency-chat-empty">
+          No messages yet.
         </div>
+      )}
 
-        <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type response..."
-        />
-        <button onClick={sendMessage}>Send</button>
+      {messages.map((m, i) => (
+        <div key={i} className="emergency-chat-message">
+          <span className="emergency-chat-user">
+            User {m.from}
+          </span>
+          <span className="emergency-chat-text">
+            {m.message}
+          </span>
+          <span className="emergency-chat-time">
+            {new Date(m.time).toLocaleTimeString()}
+          </span>
+        </div>
+      ))}
     </div>
-    );
+
+    <div className="emergency-chat-input">
+      <input
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Type response..."
+      />
+      <button onClick={sendMessage}>Send</button>
+    </div>
+  </div>
+);
+
 };

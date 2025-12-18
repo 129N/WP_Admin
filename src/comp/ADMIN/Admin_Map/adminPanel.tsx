@@ -60,6 +60,7 @@ export interface Notification_Interface {
     name: string;
     email?: string;
   };
+
 }
 
 export interface LiveLocation {
@@ -367,7 +368,7 @@ const fetchLiveLocation = async(event_code:string) => {
           </div>
 {/* 3. Notifications (Admins sees) */}         
           { isAdmin && (<div className="Bottom">
-                <NotificationQueue notification={notifications} />  {/* from Notification_Interface NotificationProps */}
+                <NotificationQueue notification={notifications} event_code={event_code}/>  {/* from Notification_Interface NotificationProps */}
           </div>)}
 
         </div>

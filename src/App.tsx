@@ -19,6 +19,7 @@ import TrackMap from './comp/ADMIN/FileLoadOPT';
 import Datalist from './comp/ADMIN/admin_DataList';
 import AdminPanel from './comp/ADMIN/Admin_Map/adminPanel';
 import GpxFileList from './comp/ADMIN/GpxFileList';
+import EmergencyChat from './comp/ADMIN/Admin_Map/MapComponent/EmergencyChat';
 export const BASE_URL =import.meta.env.VITE_API_BASE_URL;
 
 function App() {
@@ -50,6 +51,11 @@ function App() {
       <Route path="/MapView" element={<TrackMap />} />
       <Route path="/Datalist" element={<Datalist />} />
       <Route path="/GpxFileList" element={<GpxFileList />} />
+     <Route
+      path="/emergency/:event_code/:participant_id"
+      element={<EmergencyChat />}
+    />
+
     </Routes>
   </BrowserRouter>
 
